@@ -2,15 +2,13 @@ version: '3.8'
 
 services:
   api:
-    # 🟢 CHANGE: Build from your local modified Dockerfile
     build:
       context: .
       dockerfile: api/Dockerfile
     container_name: piston_api
     restart: always
-    privileged: true # Required for Piston's isolate sandbox
+    privileged: true
     ports:
-      - 2000:2000
-    # 🔴 REMOVED: No more volumes! Languages are now inside the image.
+      - "2000:2000"
     tmpfs:
       - /tmp:exec
