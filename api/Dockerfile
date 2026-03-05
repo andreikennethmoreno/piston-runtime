@@ -27,10 +27,33 @@ COPY --from=isolate /usr/local/etc/isolate /usr/local/etc/isolate
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
 
+# Set working directory
 WORKDIR /piston_api
-COPY ["package.json", "package-lock.json", "./"]
+
+# 🟢 FIX: Copy both API and CLI folders so ppman works internally
+COPY ./api/package.json ./api/package-lock.json ./
 RUN npm install
-COPY ./src ./src
+COPY ./api/src ./src
+COPY ./cli ./cli
+
+# 🟢 FIX: Install CLI dependencies so we can run ppman
+RUN cd cli && npm install
+
+# ==============================================================================
+# BAKE LANGUAGES INTO THE IMAGE
+# ==============================================================================
+RUN node cli/index.js ppman install node=18.15.0 && \
+    node cli/index.js ppman install typescript=5.0.3 && \
+    node cli/index.js ppman install python=3.10.0 && \
+    node cli/index.js ppman install php=8.2.3 && \
+    node cli/index.js ppman install ruby=3.0.1 && \
+    node cli/index.js ppman install gcc=10.2.0 && \
+    node cli/index.js ppman install go=1.16.2 && \
+    node cli/index.js ppman install rust=1.68.2 && \
+    node cli/index.js ppman install mono=6.12.0 && \
+    node cli/index.js ppman install swift=5.3.3 && \
+    node cli/index.js ppman install java=15.0.2 && \
+    node cli/index.js ppman install kotlin=1.8.20
 
 CMD ["/piston_api/src/docker-entrypoint.sh"]
 EXPOSE 2000/tcp
