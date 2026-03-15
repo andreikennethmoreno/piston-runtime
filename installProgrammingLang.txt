@@ -24,7 +24,7 @@ kotlin=1.8.20
 $
 
 # 2. Start it up
-docker-compose up -d api
+docker-compose up -d --build api
 
 # 3. Wait for the "Bypass Mode" to initialize (approx 15-20 secs)
 # Check logs to ensure no "Directory does not exist" errors

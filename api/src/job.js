@@ -65,7 +65,7 @@ class Job {
         const metadata_file_path = `/tmp/${box_id}-metadata.txt`;
         return new Promise((res, rej) => {
             cp.exec(
-                `isolate --init --cg -b${box_id}`,
+                `isolate --init -b${box_id}`,
                 (error, stdout, stderr) => {
                     if (error) {
                         rej(
@@ -152,7 +152,6 @@ class Job {
                 '--run',
                 `-b${box.id}`,
                 `--meta=${box.metadata_file_path}`,
-                '--cg',
                 '-s',
                 '-c',
                 '/box/submission',
@@ -420,7 +419,7 @@ class Job {
         await Promise.all(
             this.#dirty_boxes.map(async box => {
                 cp.exec(
-                    `isolate --cleanup --cg -b${box.id}`,
+                    `isolate --cleanup -b${box.id}`,
                     (error, stdout, stderr) => {
                         if (error) {
                             this.logger.error(
