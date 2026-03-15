@@ -6,9 +6,14 @@ services:
       context: .
       dockerfile: api/Dockerfile
     container_name: piston_api
-    restart: always
     privileged: true
+    restart: always
     ports:
       - "2000:2000"
+    volumes:
+      # This links your Windows folder to the required Linux folder
+      - ./piston_packages:/piston
+    environment:
+      - PISTON_DATA_DIRECTORY=/piston
     tmpfs:
       - /tmp:exec

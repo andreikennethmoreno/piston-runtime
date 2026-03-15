@@ -9,7 +9,7 @@ services:
         ports:
             - 2000:2000
         volumes:
-            - ./data/piston/packages:/piston/packages
+            - ./piston_packages:/piston
         environment:
             - PISTON_REPO_URL=http://repo:8000/index
 
